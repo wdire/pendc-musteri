@@ -1,0 +1,122 @@
+{
+	"info": {
+		"_postman_id": "ff73208f-17ab-4cc2-80bb-f603390c4dbd",
+		"name": "customerUrun işlemleri",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26464902"
+	},
+	"item": [
+		{
+			"name": "GrupList",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "87D84C3B6E92D82E73FCD4A1DC78F95E",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/public/customerUrun/grupList",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"public",
+						"customerUrun",
+						"grupList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UrunList",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "87D84C3B6E92D82E73FCD4A1DC78F95E",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"paket_grup_id\" : 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/public/customerUrun/list",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"public",
+						"customerUrun",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://panel-api-test.pendc.com"
+		}
+	]
+}
