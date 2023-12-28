@@ -15,6 +15,7 @@ const config: Config = {
           title: '#1D2939',
           clickable: '#344054', // nav colors, input text color
         },
+        grayStrokeColor: '#EAECF0',
       },
     },
   },
