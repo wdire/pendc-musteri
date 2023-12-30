@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import SectionContainer from '../../helper/section-container';
+import SectionContainer from '../common/section-container';
 import DesktopNav from './desktop-nav';
 import ProfileInfo from './profile-info';
 

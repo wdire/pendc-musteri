@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-  @apply text-textColor-main;
+  @apply text-textColor-main bg-background text-sm;
 }
