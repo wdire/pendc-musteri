@@ -4,6 +4,7 @@ import {
   HomeIcon,
   OffersIcon,
   OrdersIcon,
+  ProductsIcon,
   StocksIcon,
   TicketIcon,
 } from '@/components/helper/icons';
@@ -59,7 +60,7 @@ const NavItem = ({
       {active && (
         <div
           className="absolute w-full h-[3px] -bottom-[1.5px] bg-main rounded-md"
-          style={{ filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));' }}
+          style={{ filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))' }}
         ></div>
       )}
     </Link>
@@ -71,7 +72,8 @@ const DesktopNav = () => {
     <div className="flex justify-center gap-6 h-full">
       <NavItem href="/" label="Ana Sayfa" icon={<HomeIcon />} />
       <NavItem href="/" label="Stoklar" icon={<StocksIcon />} />
-      <NavItem href="/" label="Siparişler" icon={<OrdersIcon />} active />
+      <NavItem href="/" label="Ürünler" icon={<ProductsIcon />} active />
+      <NavItem href="/" label="Siparişler" icon={<OrdersIcon />} />
       <NavItem href="/" label="Teklifler" icon={<OffersIcon />} />
       <NavItem href="/" label="Ticket" icon={<TicketIcon />} />
       <NavItem href="/" label="Finans" icon={<FinanceIcon />} dropdown />

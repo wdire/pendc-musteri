@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SectionContainer from '../../helper/section-container';
 import DesktopNav from './desktop-nav';
+import ProfileInfo from './profile-info';
 
 const Header = () => {
   return (
@@ -16,7 +17,7 @@ const Header = () => {
           />
         </Link>
         <DesktopNav />
-        <div></div>
+        <ProfileInfo />
       </SectionContainer>
     </div>
   );
