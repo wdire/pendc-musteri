@@ -8,6 +8,15 @@ import Image from 'next/image';
 import Status, { StatusProps } from '../common/status';
 import Cancel from '../common/cancel';
 import Undo from '../common/undo';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/form/select';
+import { useState } from 'react';
 
 const columns: ColumnType[] = [
   {
@@ -108,16 +117,76 @@ const datas = [
   },
 ];
 
+const selectOptions = [
+  {
+    label: 'Domain Hizmeti',
+    value: 'domain_hizmeti',
+  },
+  {
+    label: 'Cloud SSD Hizmeti',
+    value: 'cloud_ssd_hizmeti',
+  },
+  {
+    label: 'Ek Kaynak Hizmeti',
+    value: 'ek_kaynak_hizmeti',
+  },
+  {
+    label: 'Yedekleme Hizmeti',
+    value: 'yedekleme_hizmeti',
+  },
+  {
+    label: 'IP Hizmeti',
+    value: 'ip_hizmeti',
+  },
+  {
+    label: 'İnternet Erişimi Hizmeti',
+    value: 'internet_erisimi_hizmeti',
+  },
+  {
+    label: 'Secure Uplink Hizmeti',
+    value: 'secure_uplink_hizmeti',
+  },
+];
+
 const ProductsTable = () => {
+  const [selectedService, setSelectedService] = useState('cloud_ssd_hizmeti');
+
+  const onSelectChange = (value: string) => {
+    console.log('value', value);
+    setSelectedService(value);
+  };
+
   return (
     <SectionContainer className="mb-5">
       <RoundContainer>
-        <div className="p-6 mb-5">
-          <div className="text-xl text-textColor-title pb-2">
-            Cloud SSD Hizmeti
+        <div className="p-6 mb-5 flex justify-between">
+          <div>
+            <div className="text-xl text-textColor-title pb-2">
+              Cloud SSD Hizmeti
+            </div>
+            <div className="text-sm">
+              11 kayıttan 1 - 10 arasındaki kayıtlar gösteriliyor
+            </div>
           </div>
-          <div className="text-sm">
-            11 kayıttan 1 - 10 arasındaki kayıtlar gösteriliyor
+
+          <div className="w-[398px]">
+            <div className="pb-2 text-textColor-clickable">Hizmet Seçin</div>
+            <Select value={selectedService} onValueChange={onSelectChange}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Hizmet Seçiniz" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {selectOptions.map((select) => {
+                    return (
+                      <SelectItem key={select.value} value={select.value}>
+                        {select.label}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="px-[1px] h-[640px]">

@@ -153,8 +153,8 @@ export const TicketIcon = () => {
 export const DropdownArrowIcon = () => {
   return (
     <svg
-      width="14"
-      height="8"
+      width="100%"
+      height="100%"
       viewBox="0 0 14 8"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -197,6 +197,23 @@ export const LeftIcon = () => (
     <path
       d="M15 8H1M1 8L8 15M1 8L8 1"
       strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const CheckIcon = () => (
+  <svg
+    width="100%"
+    height="100%"
+    viewBox="0 0 16 11"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M14.6666 1L5.49992 10.1667L1.33325 6"
+      strokeWidth="1.66667"
       strokeLinecap="round"
       strokeLinejoin="round"
     />

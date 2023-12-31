@@ -17,7 +17,7 @@ const ProfileInfo = () => {
         </div>
         <div className="text-xs">Pentech Bilişim</div>
       </div>
-      <div className="stroke-textColor-clickable">
+      <div className="stroke-textColor-clickable w-3 h-3">
         <DropdownArrowIcon />
       </div>
     </div>

@@ -32,7 +32,7 @@ const NavItem = ({
     <Link
       href={href}
       className={classNames(
-        'relative flex gap-3 items-center  group  hover:text-main h-full',
+        'relative flex gap-3 items-center group hover:text-main h-full',
         className,
       )}
     >
@@ -53,7 +53,7 @@ const NavItem = ({
       </span>
 
       {dropdown && (
-        <span className="stroke-textColor-clickable">
+        <span className="stroke-textColor-clickable w-3 h-3">
           <DropdownArrowIcon />
         </span>
       )}
