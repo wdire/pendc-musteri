@@ -3,11 +3,6 @@
 import { ColumnType } from '@/types/table.type';
 import RoundContainer from '../../layout/common/round-container';
 import SectionContainer from '../../layout/common/section-container';
-import classNames from 'classnames';
-import Image from 'next/image';
-import Status, { StatusProps } from '../common/status';
-import Cancel from '../common/cancel';
-import Undo from '../common/undo';
 import {
   Select,
   SelectContent,
@@ -16,7 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/form/select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Table from './table';
+import CustomerUrunService from '@/services/customer-urun.service';
+import {
+  CustomerUrunGroupListType,
+  CustomerUrunList,
+} from '@/types/customer-urun.type';
 
 const columns: ColumnType[] = [
   {
@@ -57,103 +58,86 @@ const columns: ColumnType[] = [
   },
 ];
 
-const datas = [
-  {
-    urun_adi: {
-      top_name: 'Test',
-      name: 'Başlangıç SSD Cloud Sunucu',
-    },
-    disk: '80 GB',
-    ram: '4 GB',
-    cpu: '2 Core',
-    port: '1 Gbit/s',
-    fiyat: '₺1.458,00 (Aylık)',
-    yenileme: '14.05.2023',
-    durum: {
-      color: 'green',
-      label: 'Aktif',
-    },
-    islemler: {
-      type: 'cancel',
-    },
-  },
-  {
-    urun_adi: {
-      top_name: 'Test',
-      name: 'Başlangıç SSD Cloud Sunucu',
-    },
-    disk: '80 GB',
-    ram: '4 GB',
-    cpu: '2 Core',
-    port: '1 Gbit/s',
-    fiyat: '₺1.458,00 (Aylık)',
-    yenileme: '14.05.2023',
-    durum: {
-      color: 'red',
-      label: 'Pasif',
-    },
-    islemler: {
-      type: 'undo',
-    },
-  },
-  {
-    urun_adi: {
-      top_name: 'Test',
-      name: 'Başlangıç SSD Cloud Sunucu',
-    },
-    disk: '80 GB',
-    ram: '4 GB',
-    cpu: '2 Core',
-    port: '1 Gbit/s',
-    fiyat: '₺1.458,00 (Aylık)',
-    yenileme: '14.05.2023',
-    durum: {
-      color: 'green',
-      label: 'Aktif',
-    },
-    islemler: {
-      type: 'undo',
-    },
-  },
-];
-
-const selectOptions = [
-  {
-    label: 'Domain Hizmeti',
-    value: 'domain_hizmeti',
-  },
-  {
-    label: 'Cloud SSD Hizmeti',
-    value: 'cloud_ssd_hizmeti',
-  },
-  {
-    label: 'Ek Kaynak Hizmeti',
-    value: 'ek_kaynak_hizmeti',
-  },
-  {
-    label: 'Yedekleme Hizmeti',
-    value: 'yedekleme_hizmeti',
-  },
-  {
-    label: 'IP Hizmeti',
-    value: 'ip_hizmeti',
-  },
-  {
-    label: 'İnternet Erişimi Hizmeti',
-    value: 'internet_erisimi_hizmeti',
-  },
-  {
-    label: 'Secure Uplink Hizmeti',
-    value: 'secure_uplink_hizmeti',
-  },
-];
-
-const ProductsTable = () => {
-  const [selectedService, setSelectedService] = useState('cloud_ssd_hizmeti');
+const ServiceTable = () => {
+  const [selectedService, setSelectedService] = useState('');
+  const [groupList, setGroupList] = useState<CustomerUrunGroupListType[]>([]);
+  const [customerUrunList, setCustomerUrunList] = useState<CustomerUrunList[]>(
+    [],
+  );
 
   const onSelectChange = (value: string) => {
     console.log('value', value);
     setSelectedService(value);
+  };
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    init(abortController.signal);
+
+    return () => {
+      abortController.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (selectedService && Number(selectedService)) {
+      const abortController = new AbortController();
+
+      fetchCustomerUrunList({
+        signal: abortController.signal,
+        group_id: Number(selectedService),
+      });
+
+      return () => {
+        abortController.abort();
+      };
+    }
+  }, [selectedService]);
+
+  const fetchCustomerUrunList = async ({
+    signal,
+    group_id,
+  }: {
+    signal: AbortSignal;
+    group_id: number;
+  }) => {
+    if (group_id !== 2) {
+      // Api'ın çok uygun olmaması ve bunun bir test olduğundan dolayı diğer grupLiist tablo içeriklerini göstermiyorum.
+      return false;
+    }
+
+    try {
+      const customerListResponse = await CustomerUrunService.list({
+        signal: signal,
+        group_id: group_id,
+      });
+
+      if (customerListResponse.data?.data) {
+        setCustomerUrunList(customerListResponse.data?.data);
+      } else {
+        throw new Error("Couldn't get data");
+      }
+    } catch (err) {
+      console.error('err', err);
+    }
+  };
+
+  const init = async (signal: AbortSignal) => {
+    try {
+      const groupListResponse = await CustomerUrunService.groupList({
+        signal: signal,
+      });
+
+      if (groupListResponse.data?.data) {
+        setGroupList(groupListResponse.data?.data);
+        setSelectedService(groupListResponse.data?.data[0].paket_grup_id + '');
+      } else {
+        throw new Error("Couldn't get data");
+      }
+    } catch (err) {
+      console.error('err', err);
+    }
   };
 
   return (
@@ -177,10 +161,13 @@ const ProductsTable = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {selectOptions.map((select) => {
+                  {groupList.map((groupListItem) => {
                     return (
-                      <SelectItem key={select.value} value={select.value}>
-                        {select.label}
+                      <SelectItem
+                        key={groupListItem.paket_grup}
+                        value={groupListItem.paket_grup_id + ''}
+                      >
+                        {groupListItem.paket_grup}
                       </SelectItem>
                     );
                   })}
@@ -189,90 +176,15 @@ const ProductsTable = () => {
             </Select>
           </div>
         </div>
-        <div className="px-[1px] h-[640px]">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-table-striped border-b border-b-table-stroke text-left">
-                {columns.map((column, index) => {
-                  return (
-                    <th
-                      data-id={column.header}
-                      key={'t-head_' + column.id}
-                      className={classNames('text-xs bg-body-s h-[34px]', {
-                        'pl-6': index === 0,
-                        //'pr-6': index === columns.length - 1,
-                      })}
-                    >
-                      {column.header}
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {datas.map((row, index) => {
-                return (
-                  <tr
-                    key={'row_' + index}
-                    className={
-                      'h-[68px] border-b border-b-table-stroke even:bg-table-striped text-table-textColor'
-                    }
-                  >
-                    <td className="pl-6">
-                      <div className="flex gap-4">
-                        <Image
-                          src={'/assets/server-icon.png'}
-                          width={44}
-                          height={44}
-                          alt="Server Icon"
-                          className="pointer-events-none"
-                        />
-                        <div>
-                          <div className="text-textColor-main">
-                            {row.urun_adi.top_name}
-                          </div>
-                          <div className="text-textColor-title font-medium">
-                            {row.urun_adi.name}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>{row.disk}</td>
-                    <td>{row.ram}</td>
-                    <td>{row.cpu}</td>
-                    <td>{row.port}</td>
-                    <td>{row.fiyat}</td>
-                    <td>{row.yenileme}</td>
-                    <td>
-                      <Status
-                        label={row.durum.label}
-                        color={row.durum.color as StatusProps['color']}
-                      />
-                    </td>
-                    <td>
-                      {row.islemler.type === 'cancel' ? (
-                        <Cancel
-                          onClick={() => {
-                            console.log('clicked cancel for', row);
-                          }}
-                        />
-                      ) : (
-                        <Undo
-                          onClick={() => {
-                            console.log('clicked undo for', row);
-                          }}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div
+          className="px-[1px] overflow-y-auto"
+          style={{ height: 'calc(100vh - 244px)' }}
+        >
+          <Table datas={customerUrunList} columns={columns} />
         </div>
       </RoundContainer>
     </SectionContainer>
   );
 };
 
-export default ProductsTable;
+export default ServiceTable;

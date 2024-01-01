@@ -46,7 +46,7 @@ const SelectScrollUpButton = React.forwardRef<
     )}
     {...props}
   >
-    <span className="stroke-textColor-main w-2.5 h-2.5 rotate-180">
+    <span className="stroke-textColor-main w-3.5 h-3.5 rotate-180">
       <DropdownArrowIcon />
     </span>
   </SelectPrimitive.ScrollUpButton>
@@ -65,7 +65,7 @@ const SelectScrollDownButton = React.forwardRef<
     )}
     {...props}
   >
-    <span className="stroke-textColor-main w-2.5 h-2.5">
+    <span className="stroke-textColor-main w-3.5 h-3.5">
       <DropdownArrowIcon />
     </span>
   </SelectPrimitive.ScrollDownButton>
