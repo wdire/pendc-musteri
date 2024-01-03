@@ -18,6 +18,7 @@ import {
   CustomerUrunGroupListType,
   CustomerUrunList,
 } from '@/types/customer-urun.type';
+import useProductCancelModal from '@/components/modal/useProductCancel.modal';
 
 const columns: ColumnType[] = [
   {
@@ -64,6 +65,9 @@ const ServiceTable = () => {
   const [customerUrunList, setCustomerUrunList] = useState<CustomerUrunList[]>(
     [],
   );
+
+  const { modalContent: cancelModalContent, openModal: cancelOpenModal } =
+    useProductCancelModal();
 
   const onSelectChange = (value: string) => {
     console.log('value', value);
@@ -142,6 +146,7 @@ const ServiceTable = () => {
 
   return (
     <SectionContainer className="mb-5">
+      {cancelModalContent}
       <RoundContainer>
         <div className="p-6 mb-5 flex justify-between">
           <div>
@@ -180,7 +185,11 @@ const ServiceTable = () => {
           className="px-[1px] overflow-y-auto"
           style={{ height: 'calc(100vh - 244px)' }}
         >
-          <Table datas={customerUrunList} columns={columns} />
+          <Table
+            datas={customerUrunList}
+            columns={columns}
+            customerUrun={{ cancelOpenModal }}
+          />
         </div>
       </RoundContainer>
     </SectionContainer>

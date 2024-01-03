@@ -10,6 +10,9 @@ import Helpers from '@/lib/helpers';
 type TableData = {
   datas: CustomerUrunList[];
   columns: ColumnType[];
+  customerUrun: {
+    cancelOpenModal: (productId: string) => void;
+  };
 };
 
 const hizmet_durum_colors = {
@@ -18,7 +21,7 @@ const hizmet_durum_colors = {
   Beklemede: 'orange',
 };
 
-const Table = ({ datas, columns }: TableData) => {
+const Table = ({ datas, columns, customerUrun }: TableData) => {
   return (
     <table className="w-full">
       <thead>
@@ -45,8 +48,6 @@ const Table = ({ datas, columns }: TableData) => {
       <tbody>
         {datas.map((row, index) => {
           const json_properies = Helpers.jsonParse(row.json_ozellik);
-
-          console.log('json_properies', json_properies);
 
           return (
             <tr
@@ -107,16 +108,10 @@ const Table = ({ datas, columns }: TableData) => {
               </td>
               <td>
                 {row.iptal_talep ? (
-                  <Undo
-                    onClick={() => {
-                      console.log('clicked undo for', row);
-                    }}
-                  />
+                  <Undo onClick={() => console.log('undo click')} />
                 ) : (
                   <Cancel
-                    onClick={() => {
-                      console.log('clicked cancel for', row);
-                    }}
+                    onClick={() => customerUrun.cancelOpenModal(String(row.id))}
                   />
                 )}
               </td>

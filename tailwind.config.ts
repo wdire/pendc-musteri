@@ -26,6 +26,7 @@ const config: Config = {
         theme: {
           red: {
             100: '#FEF3F2',
+            600: '#F04438',
             700: '#B42318',
           },
           green: {
@@ -33,6 +34,7 @@ const config: Config = {
             800: '#027A48',
           },
           gray: {
+            300: '#D0D5DD',
             700: '#344054',
           },
         },
